@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+nut=pd.read_csv('nutrition.csv', index_col=[0])
+nut.head()
+# TASK WAS TO REMOVE UNITS FROM DATA SET AND ADD IT TO COLUMN INDEX
+# 1) Renaming columns by adding units to their name
+
+          nut.set_index('name',verify_integrity=True, inplace=True)
+          units= nut.astype(str).replace(regex=True, to_replace='[^a-zA-Z]', value='').mode()
+          col_list= list(nut.columns)
+          suff= list(units.iloc[0])
+          new_col1 = list(zip(col_list, suff))
+          Col_updated= list(i+" "+"("+m+")" for i,m in new_col1)
+          rename_col=dict(zip(col_list, Col_updated))
+          nut.rename(columns=rename_col,  inplace=True)
+          nut.replace(regex=True, to_replace='[a-zA-Z]', value='', inplace=True)
+          
+# 2) another way
+
+
+          units=units.replace('',np.nan).dropna(axis=1)    
+          new_column= {k:k+"_"+units[k].iat[0] for k in units}  
+          nut.rename(columns=new_column, inplace= True)
+          nut.replace(regex=True, to_replace='[a-zA-Z]', value='', inplace=True)
+
+
+
+
